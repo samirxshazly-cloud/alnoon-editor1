@@ -1,0 +1,23 @@
+import {detectChemicalEquation} from './chemistry-v6.js';
+const LIST=/^(?:[-•●▪◦✓✔]|(?:\d+|[٠-٩]+)[.)\-–—]|[أ-ي][.)\-–—])\s+/u;
+const QUESTION=/^(?:س\s*[:：.)-]?|سؤال|اختر|علل|فسر|قارن|أكمل|صحح|اذكر|وضح|حدد|استنتج|ما\s|ماذا\s|كيف\s|لماذا\s|هل\s)/u;
+const IMPORTANT=/^(?:مهم|ملحوظة|ملاحظة|تنبيه|انتبه|تذكر|قاعدة|خلاصة|استنتاج|تعريف)\s*[:：\-–—]?/u;
+const TITLE=/^(?:الوحدة|الباب|الفصل|الدرس|الكبسولة|الموضوع|القسم|أولاً|ثانياً|ثالثاً|رابعاً|خامساً|سادساً|سابعاً|ثامناً|تاسعاً|عاشراً)\b/u;
+const TABLE_HEADER=/^(?:وجه المقارنة|نوع العامل|نوع المقاومة|المصطلح|الخاصية|التطبيق|العنصر|الصفة|المقارنة|نوع الحفرية|وجه المقارنه)\b/u;
+export function atomizeSource(source=''){
+  const s=String(source).replace(/\r\n?/g,'\n'); const a=[]; let start=0,n=0;
+  for(let i=0;i<s.length;i++) if(s[i]==='\n'){const raw=s.slice(start,i+1),text=raw.slice(0,-1);a.push({id:`a${++n}`,raw,text,blank:!text.trim()});start=i+1;}
+  if(start<s.length){const raw=s.slice(start);a.push({id:`a${++n}`,raw,text:raw,blank:!raw.trim()});}
+  return a;
+}
+export const sourceIsLossless=(s,a)=>a.map(x=>x.raw).join('')===String(s).replace(/\r\n?/g,'\n');
+function cols(line){const t=String(line).trim();if(!t)return[];if(t.includes('\t'))return t.split('\t').map(x=>x.trim());if(t.includes('|'))return t.split('|').map(x=>x.trim()).filter(Boolean);const sp=t.split(/\s{2,}/).map(x=>x.trim()).filter(Boolean);return sp.length>=2?sp:[t];}
+function isEnumerationPair(cells){if(cells.length!==2)return false;const a=cells[0].trim(),b=cells[1].trim();return /^(?:\d+|[٠-٩]+|[أ-ي]|[-•●▪◦✓✔])[.)\-–—:]?$/u.test(a)&&b.length>0;}
+function looksTable(lines){const rows=lines.map(cols);if(rows.length<2||rows.some(r=>r.length<2))return false;if(rows.every(isEnumerationPair))return false;const counts=rows.map(r=>r.length);if(Math.max(...counts)-Math.min(...counts)>1)return false;const header=rows[0].join(' ');const hasHeaderCue=TABLE_HEADER.test(header)||rows[0].every(x=>x.length<45);return hasHeaderCue&&rows.length>=2;}
+function headingScore(s,prevBlank,nextBlank){let n=0;const t=s.trim();if(t.length<=70)n+=2;if(t.length<=38)n+=1;if(prevBlank)n+=1;if(nextBlank)n+=.5;if(TITLE.test(t))n+=3;if(/[:：]$/.test(t))n+=.6;if(/[.!؟؛]$/.test(t))n-=2;if(QUESTION.test(t)||LIST.test(t)||detectChemicalEquation(t))n-=3;if(t.split(/\s+/).length>12)n-=2;return n;}
+function classify(text,ctx){const s=text.trim();if(!s)return'blank';if(detectChemicalEquation(s))return'equation';if(QUESTION.test(s))return'question';if(IMPORTANT.test(s))return'important';if(LIST.test(s))return'list';const h=headingScore(s,ctx.prevBlank,ctx.nextBlank);if(h>=5)return'title';if(h>=3.1)return'subtitle';return'paragraph';}
+export function analyzeLocal(atoms){const p=new Map();atoms.forEach((a,i)=>{if(a.blank)return;const type=classify(a.text,{prevBlank:!atoms[i-1]||atoms[i-1].blank,nextBlank:!atoms[i+1]||atoms[i+1].blank});p.set(a.id,{id:a.id,type,group:null,keepWithNext:false,pageBreakBefore:false,imageSlots:['paragraph','question','list','note'].includes(type)?1:0,importance:type==='important'?'important':'normal',importantPhrases:[],tableDirection:'rtl'});});
+  let i=0;while(i<atoms.length){if(atoms[i].blank){i++;continue}let j=i;while(j<atoms.length&&!atoms[j].blank)j++;const block=atoms.slice(i,j);for(let s=0;s<block.length;){let e=s;while(e<block.length&&cols(block[e].text).length>=2)e++;const run=block.slice(s,e);if(run.length>=2&&looksTable(run.map(x=>x.text))){run.forEach(x=>{const z=p.get(x.id);z.type='table';z.imageSlots=0;});}s=e===s?s+1:e;}i=j;}
+  let gid=0,cur=null,curType=null;for(const a of atoms){if(a.blank){cur=null;curType=null;continue}const z=p.get(a.id);let ng=!cur||['title','subtitle','question','important','equation','table'].includes(z.type)||z.type!==curType;if(z.type==='list'&&curType==='list')ng=false;if(z.type==='paragraph'&&curType==='paragraph')ng=false;if(ng){cur=`g${++gid}`;curType=z.type}z.group=cur;}
+  const non=atoms.filter(a=>!a.blank);non.forEach((a,i)=>{const z=p.get(a.id);if(['title','subtitle'].includes(z.type))z.keepWithNext=true;if(z.type==='title'&&i>0&&TITLE.test(a.text.trim()))z.pageBreakBefore=true;});return p;}
+export function buildLocalGroups(atoms,plan){const out=[];let cur=null;const flush=()=>{if(cur){cur.text=cur.lines.join('\n');out.push(cur);cur=null}};for(const a of atoms){if(a.blank){flush();continue}const p=plan.get(a.id);if(!cur||cur.group!==p.group||cur.type!==p.type){flush();cur={group:p.group,type:p.type,lines:[],atomIds:[],keepWithNext:p.keepWithNext,pageBreakBefore:p.pageBreakBefore,imageSlots:p.imageSlots,importance:p.importance,importantPhrases:[],tableDirection:p.tableDirection};}cur.lines.push(a.text);cur.atomIds.push(a.id);cur.keepWithNext||=p.keepWithNext;cur.pageBreakBefore||=p.pageBreakBefore;}flush();return out;}
