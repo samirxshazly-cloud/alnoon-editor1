@@ -1,4 +1,11 @@
 const DB_NAME='alnoon-editor-db', STORE='documents';
+if(typeof document!=='undefined'){
+  const ensureV5=()=>{
+    if(!document.querySelector('link[data-alnoon-v5]')){const l=document.createElement('link');l.rel='stylesheet';l.href='/styles-v5.css';l.dataset.alnoonV5='1';document.head.append(l);}
+    import('../editor-fixes-v5.js').catch(()=>{});
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ensureV5,{once:true});else ensureV5();
+}
 function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE,{keyPath:'id'});};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
 export async function localPut(doc){const db=await openDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put({...doc,localUpdatedAt:new Date().toISOString()});tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);});}
 export async function localGet(id){const db=await openDB();return new Promise((resolve,reject)=>{const r=db.transaction(STORE).objectStore(STORE).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error);});}
