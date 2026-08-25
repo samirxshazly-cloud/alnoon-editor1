@@ -52,7 +52,7 @@ function formatFormulaSegment(segment=''){
 export function formatChemicalEquation(text=''){
   const source=String(text).trim(),a=parseReactionArrow(source);
   if(!a)return`<span class="chem-side">${formatFormulaSegment(source)}</span>`;
-  const before=source.slice(0,a.index),after=source.slice(a.index+a.raw.length);
+  const before=source.slice(0,a.index).trimEnd(),after=source.slice(a.index+a.raw.length).trimStart();
   return `<span class="chem-side">${formatFormulaSegment(before)}</span>`+
     `<span class="chem-arrow-wrapper" contenteditable="false" data-source="${esc(a.raw)}">`+
     `${a.condition?`<span class="chem-condition" dir="auto">${esc(a.condition)}</span>`:'<span class="chem-condition empty">&nbsp;</span>'}`+
