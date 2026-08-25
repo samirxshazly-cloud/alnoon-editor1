@@ -1,2 +1,27 @@
 @import url('/styles-v4.css');
-.frame-minihead{position:absolute!important;top:4px;right:8px;left:8px;height:20px!important;z-index:6;margin:0!important;padding:0!important}.frame-body{padding-top:31px!important}.frame-title .frame-body{padding-top:31px!important}.measure-host .measure-inner::after{content:"";display:block;flex:0 0 48px;width:1px}.page-inner{height:954px!important}.measure-inner{height:954px!important}.image-slot:not(:has(img)){height:76px!important;min-height:64px!important}.image-placeholder b{font-size:20px!important}.image-placeholder{font-size:10px!important}.frame-body{gap:10px!important;padding-right:14px!important;padding-left:14px!important;padding-bottom:13px!important}.frame-content{line-height:1.68!important}.frame-question .frame-content{min-height:auto!important}.no-highlight{background:var(--v5-surface,#fff)!important;background-image:none!important;box-shadow:none!important}.frame{--v5-surface:#fff}.frame-question{--v5-surface:#f8faff}.frame-important{--v5-surface:#fffaf0}.frame-note{--v5-surface:#faf7fc}.frame-subtitle{--v5-surface:#f4fbfa}.frame-title{--v5-surface:#1c4e65}#clearHighlight{grid-column:1/-1}.chem-arrow-wrapper{min-width:78px!important;margin:0 18px!important;gap:3px!important}.chem-arrow{display:block!important;min-width:66px!important;text-align:center!important;font-family:'Cambria Math','Times New Roman',serif!important;font-size:32px!important;line-height:.62!important;transform:scaleX(1.18);transform-origin:center}.chem-condition{font-size:11px!important;min-height:14px!important;margin-bottom:3px!important}.smart-arrow{display:inline-block;direction:ltr;unicode-bidi:isolate;min-width:38px;text-align:center;margin:0 4px;font-family:'Cambria Math','Times New Roman',serif;font-size:1.15em;font-weight:700;color:#29485c}.chem-oxidation,.chem-charge{font-size:.58em!important;vertical-align:super!important;line-height:0;margin-inline-start:1px;color:#b3473f}.chem-species{white-space:nowrap}.chem-equation{white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important}.real-table th,.real-table td{padding:7px 9px!important;line-height:1.55!important}.real-table{font-size:13.5px!important}
+.frame-minihead{position:absolute!important;top:4px;right:8px;left:8px;height:20px!important;z-index:6;margin:0!important;padding:0!important}
+.frame-body{padding-top:31px!important;gap:10px!important;padding-right:14px!important;padding-left:14px!important;padding-bottom:13px!important}
+.frame-title .frame-body{padding-top:31px!important}
+.measure-host .measure-inner::after{content:"";display:block;flex:0 0 48px;width:1px}
+.page-inner{height:954px!important}.measure-inner{height:954px!important}
+.image-slot:not(:has(img)){height:76px!important;min-height:64px!important}.image-placeholder b{font-size:20px!important}.image-placeholder{font-size:10px!important}
+.frame-content{line-height:1.68!important}.frame-question .frame-content{min-height:auto!important}
+.no-highlight{background:var(--v5-surface,#fff)!important;background-image:none!important;box-shadow:none!important}
+.frame{--v5-surface:#fff}.frame-question{--v5-surface:#f8faff}.frame-important{--v5-surface:#fffaf0}.frame-note{--v5-surface:#faf7fc}.frame-subtitle{--v5-surface:#f4fbfa}.frame-title{--v5-surface:#1c4e65}
+#clearHighlight{grid-column:1/-1}
+::highlight(format-selection){background-color:rgba(52,132,255,.22);text-decoration:underline 1.5px rgba(36,102,210,.75)}
+.chem-arrow-wrapper{display:inline-flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;width:auto!important;margin:0 5px!important;padding:0!important;gap:1px!important;vertical-align:middle!important;top:0!important}
+.chem-condition{font-size:.50em!important;line-height:1.05!important;min-height:0!important;margin:0 0 1px!important;white-space:nowrap!important}
+.chem-condition.empty{display:none!important}
+.chem-arrow{display:block!important;width:auto!important;min-width:0!important;text-align:center!important;font-family:'Cambria Math','Times New Roman',serif!important;font-size:1.18em!important;line-height:.72!important;transform:none!important;letter-spacing:0!important}
+.chem-side{white-space:nowrap!important}
+.smart-arrow{display:inline-block!important;direction:ltr;unicode-bidi:isolate;min-width:0!important;width:auto!important;text-align:center;margin:0 2px!important;padding:0!important;font-family:'Cambria Math','Times New Roman',serif;font-size:1.02em!important;font-weight:700;color:#29485c;letter-spacing:0!important}
+.chem-oxidation,.chem-charge{font-size:.58em!important;vertical-align:super!important;line-height:0;margin-inline-start:1px;color:#b3473f}.chem-species{white-space:nowrap}
+.chem-equation{white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important}
+.real-table th,.real-table td{padding:7px 9px!important;line-height:1.55!important}.real-table{font-size:13.5px!important}
+.equation-tools{margin-top:9px;padding-top:9px;border-top:1px solid #e5edf1}
+.equation-tool-inputs{display:grid;grid-template-columns:1fr 1fr;gap:7px}.equation-tool-inputs label{margin-top:0}
+.equation-tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.equation-tool-grid button{font-size:11px;padding:7px 6px}
+.equation-help{display:block;margin-top:7px;line-height:1.5}
+#equationSource{direction:ltr!important;text-align:left!important;font-family:'Cambria Math','Times New Roman',serif!important}
+@media(max-width:900px){.equation-tool-inputs,.equation-tool-grid{grid-template-columns:1fr}}
