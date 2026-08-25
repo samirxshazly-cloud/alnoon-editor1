@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>النون لفهم العلوم — محرر المذكرات التعليمية</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><button id="sidebarToggle" class="icon-btn mobile-only" aria-label="القائمة">☰</button><span class="brand-mark">ن</span><div><strong>النون لفهم العلوم</strong><small>محرر المذكرات التعليمية</small></div></div>
+    <div class="top-actions">
+      <button id="undoBtn" class="icon-btn" title="تراجع">↶</button>
+      <button id="importBtn" class="primary">＋ استيراد مذكرة كاملة</button>
+      <button id="recentBtn">مذكراتي الأخيرة</button>
+      <span id="saveStatus" class="save-status">تم الحفظ محليًا</span>
+      <button id="shareBtn">نسخ رابط المشاركة</button>
+      <button id="pdfBtn" class="accent">تصدير PDF ↗</button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <div class="side-head">
+        <label>المذكرة الحالية</label>
+        <input id="memoTitle" value="أساسيات الكيمياء — الصف الثالث" />
+      </div>
+
+      <section class="panel open">
+        <button class="panel-title">عرض الصفحة <span>⌄</span></button>
+        <div class="panel-body">
+          <div class="zoom-row"><button id="zoomOut">−</button><input id="zoomRange" type="range" min="40" max="125" value="76"/><button id="zoomIn">＋</button></div>
+          <div class="muted"><span id="zoomValue">76%</span> · الأبعاد الطباعية ثابتة</div>
+          <button id="fitBtn" class="wide">ملاءمة الشاشة</button>
+        </div>
+      </section>
+
+      <section class="panel open ai-panel">
+        <button class="panel-title">المساعد الذكي — Gemini <span>⌄</span></button>
+        <div class="panel-body">
+          <small class="muted">تدقيق التخطيط والمعادلات وتقسيم الصفحات دون إعادة كتابة النص</small>
+          <label>مفتاح Google AI Studio</label>
+          <div class="key-row"><input id="geminiKey" type="password" autocomplete="off" placeholder="ألصق المفتاح هنا"/><button id="toggleKey" title="إظهار/إخفاء">◉</button></div>
+          <label class="check"><input id="rememberKey" type="checkbox"/> تذكّر المفتاح على هذا الجهاز (اختياري)</label>
+          <label>النموذج</label>
+          <select id="geminiModel">
+            <option value="gemini-3.7-flash" selected>Gemini 3.7 Flash — موصى به</option>
+            <option value="gemini-3.6-flash">Gemini 3.6 Flash</option>
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite</option>
+          </select>
+          <div class="grid-2"><button id="testGemini">اختبار الاتصال</button><button id="aiAnalyze" class="primary">تنسيق ذكي</button></div>
+          <button id="aiChemAudit" class="wide">تدقيق المعادلات كيميائيًا</button>
+          <div id="aiStatus" class="ai-status"></div>
+        </div>
+      </section>
+
+      <section class="panel open">
+        <button class="panel-title">تنسيق النص المحدد <span>⌄</span></button>
+        <div class="panel-body">
+          <small class="muted">يُطبّق على الجزء المحدد فقط</small>
+          <div class="format-buttons selection-tools">
+            <button data-format="bold"><b>B</b></button><button data-format="italic"><i>I</i></button>
+            <button data-format="smaller">A−</button><button data-format="larger">A＋</button>
+          </div>
+          <div class="grid-2 selection-tools"><button data-format="rtl">RTL عربي</button><button data-format="ltr">LTR English</button></div>
+          <label>حجم الخط</label>
+          <select id="fontSize"><option>12</option><option>14</option><option selected>16</option><option>18</option><option>20</option><option>22</option><option>24</option><option>28</option><option>32</option></select>
+          <div class="grid-2"><label>لون النص<input id="textColor" type="color" value="#203248"></label><label>لون التظليل<input id="highlightColor" type="color" value="#fff3a6"></label></div>
+        </div>
+      </section>
+
+      <section class="panel open">
+        <button class="panel-title">تنسيق المعادلات <span>⌄</span></button>
+        <div class="panel-body">
+          <small class="muted">معاملات وذرات وتأكسد وشروط التفاعل</small>
+          <textarea id="equationSource" rows="3" placeholder="حدد إطار معادلة لتعديل المصدر"></textarea>
+          <div class="grid-2"><button id="applyEquation">تطبيق المعادلة</button><button id="equationLTR">اتجاه LTR</button></div>
+          <small id="equationHint" class="muted">مثال: 3Fe + 2O2 -حرارة-&gt; Fe3O4</small>
+        </div>
+      </section>
+
+      <section class="panel">
+        <button class="panel-title">دمج وفصل الفقرات <span>⌄</span></button>
+        <div class="panel-body grid-2">
+          <button id="mergePrev">دمج مع السابق</button><button id="mergeNext">دمج مع التالي</button>
+          <button id="splitCursor">فصل عند المؤشر</button><button id="newPageCursor">صفحة جديدة من المؤشر</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <button class="panel-title">الصور المرتبطة <span>⌄</span></button>
+        <div class="panel-body">
+          <small class="muted">إطار صورة جاهز لكل فقرة، حتى 3 صور</small>
+          <div class="grid-2"><button id="addImageSlot">＋ إطار صورة</button><button id="deleteImage">حذف الصورة</button></div>
+          <div class="grid-2"><button id="hideImage">إخفاء/إظهار</button><button id="removeImageSlot">حذف الإطار</button></div>
+          <div class="grid-2"><button data-image-pos="left">الصورة يسار</button><button data-image-pos="bottom">الصورة أسفل</button></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <button class="panel-title">تنسيق الأرقام والترقيم <span>⌄</span></button>
+        <div class="panel-body">
+          <label>النمط</label><select id="listStyle"><option value="number">أرقام</option><option value="circle-number">أرقام داخل دوائر</option><option value="bullet">نقاط</option><option value="arabic-letter">أ، ب، ج</option></select>
+          <div class="grid-2"><label>البداية<input id="listStart" type="number" min="1" value="1"></label><label>لون الدائرة<input id="listBadgeColor" type="color" value="#1e7a72"></label></div>
+          <div class="grid-2"><label>لون الرقم<input id="listNumberColor" type="color" value="#ffffff"></label><label>لون المحتوى<input id="listTextColor" type="color" value="#203248"></label></div>
+          <div class="grid-2"><button id="applyList">تطبيق</button><button id="removeList">حذف الترقيم</button></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <button class="panel-title">الجداول الحقيقية <span>⌄</span></button>
+        <div class="panel-body">
+          <small class="muted">صفوف وأعمدة وخلايا قابلة للتحرير</small>
+          <div class="grid-2"><button id="addRow">＋ صف</button><button id="delRow">− صف</button><button id="addCol">＋ عمود</button><button id="delCol">− عمود</button></div>
+          <div class="grid-2"><button id="widerCol">توسيع عمود</button><button id="narrowerCol">تضييق عمود</button></div>
+          <div class="grid-2"><button id="tallerRow">زيادة ارتفاع الصف</button><button id="shorterRow">تقليل ارتفاع الصف</button></div>
+        </div>
+      </section>
+
+      <section class="panel open">
+        <button class="panel-title">الإطارات والصفحات <span>⌄</span></button>
+        <div class="panel-body">
+          <div class="grid-2"><button id="addFrame">＋ إضافة إطار</button><button id="deleteFrame">حذف إطار</button></div>
+          <div class="grid-2"><label>لون الإطار<input id="frameColor" type="color" value="#d9e6e2"></label><label>لون المحتوى<input id="frameTextColor" type="color" value="#203248"></label></div>
+          <label>أيقونة الإطار</label><input id="frameIcon" maxlength="4" placeholder="مثال: ✦" />
+          <button id="addPage" class="wide">＋ إضافة صفحة</button>
+        </div>
+      </section>
+
+      <button id="addFrameBottom" class="primary wide sticky-add">＋ إضافة إطار جديد</button>
+    </aside>
+
+    <main class="workspace">
+      <div class="workspace-head"><span>معاينة الطباعة الحيّة</span><small>المظهر أثناء التحرير هو نفسه في ملف PDF</small><span id="pageCount">1 صفحة</span></div>
+      <div id="canvas" class="canvas" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <dialog id="importDialog" class="modal">
+    <form method="dialog" id="importForm">
+      <div class="modal-head"><h2>استيراد مذكرة كاملة</h2><button value="cancel" class="icon-btn">✕</button></div>
+      <label>اسم المذكرة<input id="importTitle" required value="مذكرة جديدة"></label>
+      <label>النص الكامل<textarea id="importText" rows="16" placeholder="الصق محتوى المذكرة هنا دون أي تعديل..."></textarea></label>
+      <label class="file-picker">أو اختر ملفًا نصيًا<input id="importFile" type="file" accept=".txt,.md,text/plain,text/markdown"></label>
+      <div class="modal-actions"><button value="cancel">إلغاء</button><button id="importLocal" value="default">استيراد دون AI</button><button id="importSmart" class="primary" value="default">استيراد + تحليل ذكي</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="recentDialog" class="modal small-modal">
+    <div class="modal-head"><h2>مذكراتي الأخيرة</h2><button id="closeRecent" class="icon-btn">✕</button></div>
+    <div id="recentList" class="recent-list"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <input id="imageFile" type="file" accept="image/*" hidden />
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

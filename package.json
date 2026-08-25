@@ -1,0 +1,12 @@
+{
+  "name": "alnoon-edu-editor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "النون لفهم العلوم — محرر مذكرات تعليمية ذكي يحافظ على المحتوى",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": { "node": ">=20" }
+}
