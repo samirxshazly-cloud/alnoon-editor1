@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>النون لفهم العلوم — محرر المذكرات التعليمية</title>
-<link rel="stylesheet" href="/styles-v4.css">
+<link rel="stylesheet" href="/styles-v5.css?v=5.1.1">
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><button id="sidebarToggle" class="icon-btn mobile-only">☰</button><span class="brand-mark">ن</span><div><strong>النون لفهم العلوم</strong><small>محرر المذكرات التعليمية الذكي محليًا</small></div></div>
+  <div class="brand"><button id="sidebarToggle" class="icon-btn mobile-only">☰</button><span class="brand-mark">ن</span><div><strong>النون لفهم العلوم</strong><small>محرر المذكرات التعليمية الذكي محليًا · V5.1</small></div></div>
   <div class="top-actions"><button id="undoBtn" class="icon-btn">↶</button><button id="importBtn" class="primary">＋ استيراد مذكرة كاملة</button><button id="recentBtn">مذكراتي الأخيرة</button><span id="saveStatus" class="save-status">جاهز</span><button id="shareBtn">نسخ رابط المشاركة</button><button id="pdfBtn" class="accent">تصدير PDF ↗</button></div>
 </header>
 
@@ -53,7 +53,7 @@
 
   <section class="panel open">
     <button class="panel-title">تنسيق النص المحدد <span>⌄</span></button>
-    <div class="panel-body"><small class="muted">يُطبق على الجزء المحدد فقط.</small><div class="format-buttons selection-tools"><button data-format="bold"><b>B</b></button><button data-format="italic"><i>I</i></button><button data-format="important">★ مهم</button><button data-format="rtl">RTL</button><button data-format="ltr">LTR</button></div><label>حجم الخط</label><select id="fontSize"><option>12</option><option>14</option><option selected>16</option><option>18</option><option>20</option><option>22</option><option>24</option><option>28</option><option>32</option></select><div class="grid-2"><label>لون النص<input id="textColor" type="color" value="#183247"></label><label>لون التظليل<input id="highlightColor" type="color" value="#fff3a6"></label></div></div>
+    <div class="panel-body"><small class="muted">يُطبق على الجزء المحدد فقط.</small><div class="format-buttons selection-tools"><button data-format="bold"><b>B</b></button><button data-format="normal">عادي</button><button data-format="italic"><i>I</i></button><button data-format="important">★ مهم</button><button data-format="rtl">RTL</button><button data-format="ltr">LTR</button></div><label>حجم الخط</label><select id="fontSize"><option>12</option><option>14</option><option selected>16</option><option>18</option><option>20</option><option>22</option><option>24</option><option>28</option><option>32</option></select><div class="grid-2"><label>لون النص<input id="textColor" type="color" value="#183247"></label><label>لون التظليل<input id="highlightColor" type="color" value="#fff3a6"></label><button id="clearHighlight" type="button">إزالة التظليل عن المحدد</button></div></div>
   </section>
 
   <section class="panel">
@@ -109,6 +109,7 @@
 (()=>{const API_BASE='https://rpjflgmulkjbqknmotkp.supabase.co/functions/v1/alnoon-api',nf=window.fetch.bind(window);
 window.fetch=(input,init)=>{let target=input;try{if(typeof input==='string'&&input.startsWith('/api/'))target=API_BASE+input.slice(4);else if(input instanceof URL&&input.origin===location.origin&&input.pathname.startsWith('/api/'))target=new URL(API_BASE+input.pathname.slice(4)+input.search);else if(input instanceof Request){const u=new URL(input.url);if(u.origin===location.origin&&u.pathname.startsWith('/api/'))target=new Request(API_BASE+u.pathname.slice(4)+u.search,input);}}catch{}return nf(target,init);};})();
 </script>
-<script type="module" src="/app-v4.js"></script>
+<script type="module" src="/app-v4.js?v=5.1.1"></script>
+<script type="module" src="/editor-fixes-v5.js?v=5.1.1"></script>
 </body>
 </html>
